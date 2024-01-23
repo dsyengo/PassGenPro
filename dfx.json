@@ -1,0 +1,30 @@
+{
+  "canisters": {
+    "PassGenPro_backend": {
+      "candid": "src/PassGenPro_backend/PassGenPro_backend.did",
+      "package": "PassGenPro_backend",
+      "type": "rust"
+    },
+    "PassGenPro_frontend": {
+      "dependencies": [
+        "PassGenPro_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/PassGenPro_frontend/src/index.html"
+      },
+      "source": [
+        "src/PassGenPro_frontend/assets",
+        "dist/PassGenPro_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
