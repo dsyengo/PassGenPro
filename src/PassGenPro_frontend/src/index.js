@@ -1,19 +1,123 @@
-import { PassGenPro_backend } from "../../declarations/PassGenPro_backend";
+// Password Generator
+function generatePassword() {
+  const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = '0123456789';
+  const symbols = '!#$%&()*+';
 
-document.querySelector("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const button = e.target.querySelector("button");
+  const generateRandomChar = (characters) => characters[Math.floor(Math.random() * characters.length)];
 
-  const name = document.getElementById("name").value.toString();
+  const nrLetters = Math.floor(Math.random() * 3) + 8;
+  const nrNumbers = Math.floor(Math.random() * 3) + 2;
+  const nrSymbols = Math.floor(Math.random() * 3) + 2;
 
-  button.setAttribute("disabled", true);
+  let password = '';
 
-  // Interact with foo actor, calling the greet method
-  const greeting = await PassGenPro_backend.greet(name);
+  for (let i = 0; i < nrLetters; i++) {
+    password += generateRandomChar(letters);
+  }
 
-  button.removeAttribute("disabled");
+  for (let i = 0; i < nrNumbers; i++) {
+    password += generateRandomChar(numbers);
+  }
 
-  document.getElementById("greeting").innerText = greeting;
+  for (let i = 0; i < nrSymbols; i++) {
+    password += generateRandomChar(symbols);
+  }
 
-  return false;
-});
+  password = password.split('').sort(() => Math.random() - 0.5).join('');
+
+  document.getElementById('password').value = password;
+}
+
+// // Save Password
+// function savePassword() {
+//   const website = document.getElementById('website').value;
+//   const email = document.getElementById('email').value;
+//   const password = document.getElementById('password').value;
+
+//   if (!website || !password) {
+//     alert('Please make sure you haven\'t left any fields empty.');
+//     return;
+//   }
+
+//   const isOk = confirm(`These are the details entered:\nWebsite: ${website}\nEmail/UserName: ${email}\nPassword: ${password}\nIs it OK to save?`);
+
+//   if (isOk) {
+//     const newData = {
+//       [website]: {
+//         "email_or_username": email,
+//         "password": password
+//       }
+//     };
+
+//     // Call your save function here with newData
+//     alert('Password Saved. (Note: Functionality to save data needs to be implemented.)');
+//   }
+// }
+
+// // Find Password
+// function findPassword() {
+//   const website = document.getElementById('website').value;
+
+//   if (!website) {
+//     alert('Please enter a website.');
+//     return;
+//   }
+
+//   // Call your find_password function here with the website
+//   // Update the following lines based on how you retrieve data in JavaScript
+//   const email = 'example@email.com'; // Replace with retrieved email
+//   const password = 'examplePassword'; // Replace with retrieved password
+
+//   if (email && password) {
+//     document.getElementById('email').value = email;
+//     document.getElementById('password').value = password;
+//   } else {
+//     alert(`No details found for the specified website: ${website}`);
+//   }
+// }
+
+
+// Save Password
+function savePassword() {
+  const website = document.getElementById('website').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  if (!website || !password) {
+    alert('Please make sure you haven\'t left any fields empty.');
+    return;
+  }
+
+  const isOk = confirm(`These are the details entered:\nWebsite: ${website}\nEmail/UserName: ${email}\nPassword: ${password}\nIs it OK to save?`);
+
+  if (isOk) {
+    // Call the save_password function from Rust
+    save_password(website, email, password);
+    alert('Password Saved.');
+  }
+}
+
+// Find Password
+function findPassword() {
+  const website = document.getElementById('website').value;
+
+  if (!website) {
+    alert('Please enter a website.');
+    return;
+  }
+
+  // Call the find_password function from Rust
+  const passwordData = find_password(website);
+
+  if (passwordData !== null) {
+    // Update the following lines based on how you want to display the retrieved data
+    const email = passwordData.email_or_username;
+    const password = passwordData.password;
+
+    document.getElementById('email').value = email;
+    document.getElementById('password').value = password;
+  } else {
+    alert(`No details found for the specified website: ${website}`);
+  }
+}

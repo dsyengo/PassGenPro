@@ -10,7 +10,7 @@
         "PassGenPro_backend"
       ],
       "frontend": {
-        "entrypoint": "src/PassGenPro_frontend/src/index.html"
+        "entrypoint": "./src/PassGenPro_frontend/src/index.html"
       },
       "source": [
         "src/PassGenPro_frontend/assets",
